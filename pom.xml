@@ -70,9 +70,6 @@
                             </build>
                             <run>
                                 <namingStrategy>alias</namingStrategy>
-                                <ports>
-                                    <port>host.port:8080</port>
-                                </ports>
                                 <wait>
                                     <time>15000</time>
                                 </wait>
@@ -222,9 +219,50 @@
                                         </assembly>
                                     </build>
                                     <run>
+                                        <ports>
+                                            <port>host.port:8080</port>
+                                        </ports>
                                         <env>
                                             <CATALINA_OPTS>-Djava.security.egd=file:/dev/./urandom</CATALINA_OPTS>
                                         </env>
+                                    </run>
+                                </image>
+                            </images>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>env-websphere-liberty</id>
+            <activation>
+                <property>
+                    <name>env</name>
+                    <value>websphere-liberty</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jolokia</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <configuration>
+                            <images>
+                                <image>
+                                    <build>
+                                        <from>websphere-liberty:latest</from>
+                                        <assembly>
+                                            <basedir>/opt/ibm/wlp/usr/servers/defaultServer/dropins</basedir>
+                                            <descriptor>assembly/liberty-docker.xml</descriptor>
+                                        </assembly>
+                                        <env>
+                                            <LICENSE>accept</LICENSE>
+                                        </env>
+                                    </build>
+                                    <run>
+                                        <ports>
+                                            <port>host.port:9080</port>
+                                        </ports>
                                     </run>
                                 </image>
                             </images>
