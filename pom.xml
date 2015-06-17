@@ -52,25 +52,20 @@
             <plugin>
                 <groupId>org.jolokia</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
-                <version>0.11.5</version>
+                <version>0.12.0</version>
                 <configuration>
                     <dockerHost>tcp://127.0.0.1:2376</dockerHost>
                     <certPath>C:/Users/u063326/.boot2docker/certs/boot2docker-vm</certPath>
                     <sourceDirectory>/</sourceDirectory>
-                    <tags>
-                        <tag>latest</tag>
-                        <tag>${project.version}</tag>
-                    </tags>
                     <images>
                         <image>
-                            <alias>seed-smoke-tests</alias>
-                            <name>seed-smoke-tests:${project.version}</name>
+                            <alias>seed-smoke-tests-${env}</alias>
+                            <name>seed/smoke-tests-${env}</name>
                             <build>
-                                <from>tomcat:7</from>
-                                <assembly>
-                                    <basedir>/usr/local/tomcat</basedir>
-                                    <descriptor>assembly/tomcat-docker.xml</descriptor>
-                                </assembly>
+                                <tags>
+                                    <tag>latest</tag>
+                                    <tag>${project.version}</tag>
+                                </tags>
                                 <maintainer>thierry.bouvet@mpsa.com</maintainer>
                             </build>
                             <run>
@@ -84,9 +79,6 @@
                                 <log>
                                     <date>default</date>
                                 </log>
-                                <env>
-                                    <CATALINA_OPTS>-Djava.security.egd=file:/dev/./urandom</CATALINA_OPTS>
-                                </env>
                             </run>
                         </image>
                     </images>
@@ -214,6 +206,32 @@
                     <version>1.1.1</version>
                 </dependency>
             </dependencies>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jolokia</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <configuration>
+                            <images>
+                                <image>
+                                    <build>
+                                        <from>tomcat:7</from>
+                                        <assembly>
+                                            <basedir>/usr/local/tomcat</basedir>
+                                            <descriptor>assembly/tomcat-docker.xml</descriptor>
+                                        </assembly>
+                                    </build>
+                                    <run>
+                                        <env>
+                                            <CATALINA_OPTS>-Djava.security.egd=file:/dev/./urandom</CATALINA_OPTS>
+                                        </env>
+                                    </run>
+                                </image>
+                            </images>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
     </profiles>
 </project>
