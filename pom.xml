@@ -200,10 +200,10 @@
 
     <profiles>
         <profile>
-            <id>tomcat</id>
+            <id>env-tomcat</id>
             <activation>
                 <property>
-                    <name>server</name>
+                    <name>env</name>
                     <value>tomcat</value>
                 </property>
             </activation>
