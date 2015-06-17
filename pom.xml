@@ -11,6 +11,7 @@
     <properties>
         <sourceEncoding>UTF-8</sourceEncoding>
         <webContent>${project.basedir}/src/main/webapp</webContent>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
     <build>
@@ -22,6 +23,7 @@
                 <directory>src/test/resources</directory>
             </testResource>
         </testResources>
+        
         <plugins>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -46,6 +48,84 @@
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
                 <version>9.2.11.v20150529</version>
+            </plugin>
+            <plugin>
+                <groupId>org.jolokia</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.11.5</version>
+                <configuration>
+                    <dockerHost>tcp://127.0.0.1:2376</dockerHost>
+                    <certPath>C:/Users/u063326/.boot2docker/certs/boot2docker-vm</certPath>
+                    <sourceDirectory>/</sourceDirectory>
+                    <tags>
+                        <tag>latest</tag>
+                        <tag>${project.version}</tag>
+                    </tags>
+                    <images>
+                        <image>
+                            <alias>seed-smoke-tests</alias>
+                            <name>seed-smoke-tests:${project.version}</name>
+                            <build>
+                                <from>tomcat:7</from>
+                                <assembly>
+                                    <basedir>/usr/local/tomcat</basedir>
+                                    <descriptor>assembly/tomcat-docker.xml</descriptor>
+                                </assembly>
+                                <maintainer>thierry.bouvet@mpsa.com</maintainer>
+                            </build>
+                            <run>
+                                <namingStrategy>alias</namingStrategy>
+                                <ports>
+                                    <port>host.port:8080</port>
+                                </ports>
+                                <wait>
+                                    <time>15000</time>
+                                </wait>
+                                <log>
+                                    <date>default</date>
+                                </log>
+                                <env>
+                                    <CATALINA_OPTS>-Djava.security.egd=file:/dev/./urandom</CATALINA_OPTS>
+                                </env>
+                            </run>
+                        </image>
+                    </images>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>start</id>
+                        <goals>
+                            <goal>start</goal>
+                        </goals>
+                        <phase>pre-integration-test</phase>
+                   </execution> 
+                   <execution> 
+                     <id>stop</id> 
+                     <goals> 
+                       <goal>stop</goal> 
+                     </goals>
+                     <phase>post-integration-test</phase>
+                   </execution> 
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.18.1</version>
+                <configuration>
+                    <testSourceDirectory>src/it/java</testSourceDirectory>
+                    <systemPropertyVariables>
+                        <docker.port>${host.port}</docker.port>
+                    </systemPropertyVariables>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
@@ -100,8 +180,9 @@
             <artifactId>seed-integrationtest-support-web</artifactId>
             <scope>test</scope>
         </dependency>
-    </dependencies>
 
+    </dependencies>
+    
     <repositories>
         <repository>
             <id>sonatype-nexus-staging</id>
@@ -115,6 +196,24 @@
             <name>Sonatype Nexus Staging</name>
             <url>https://oss.sonatype.org/content/groups/staging</url>
         </pluginRepository>
-    </pluginRepositories>   
-    
+    </pluginRepositories>
+
+    <profiles>
+        <profile>
+            <id>tomcat</id>
+            <activation>
+                <property>
+                    <name>server</name>
+                    <value>tomcat</value>
+                </property>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.apache.geronimo.specs</groupId>
+                    <artifactId>geronimo-jta_1.1_spec</artifactId>
+                    <version>1.1.1</version>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
 </project>
