@@ -4,7 +4,7 @@
 /**
  * 
  */
-package org.seedstack.tests;
+package org.seedstack.tests.basic;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -15,6 +15,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
+import org.seedstack.tests.HelloResource;
 
 /**
  * Check if {@link HelloResource} is ok.
@@ -25,7 +26,7 @@ import org.junit.Test;
 public class CheckApplicationIT {
 
     @Test
-    public void test() throws Exception {
+    public void testHelloResource() throws Exception {
         Integer port = Integer.valueOf(System.getProperty("docker.port"));
         String uri = "http://localhost:" + port + "/smoke-tests/rest/hello";
         HttpUriRequest request = new HttpGet(uri);
