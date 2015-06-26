@@ -1,0 +1,56 @@
+/**
+ * Copyright (c) 2013-2015 by The SeedStack authors. All rights reserved.
+ *
+ * This file is part of SeedStack, An enterprise-oriented full development stack.
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+/*
+ * Creation : 30 juil. 2013
+ */
+package org.seedstack.tests.domains;
+
+import javax.inject.Inject;
+
+import org.assertj.core.api.Assertions;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.seedstack.business.api.domain.Factory;
+import org.seedstack.business.api.domain.Repository;
+import org.seedstack.seed.core.api.Logging;
+import org.seedstack.seed.it.SeedITRunner;
+import org.seedstack.seed.persistence.jpa.api.JpaUnit;
+import org.seedstack.seed.transaction.api.Transactional;
+import org.seedstack.tests.domain.product.Product;
+import org.slf4j.Logger;
+
+@RunWith(SeedITRunner.class)
+public class ProductJpaRepositoryIT {
+    @Inject
+    private Repository<Product, Long> productRepository;
+    @Inject
+    private Factory<Product> productFactory;
+
+    @Logging
+    private static Logger logger;
+
+    private Product createProduct() {
+        Product product = productFactory.create(1L);
+        Assertions.assertThat(product.getEntityId()).isNull();
+        productRepository.persist(product);;
+        Assertions.assertThat(product.getEntityId()).isNotNull();
+        return product;
+    }
+
+    @Test
+    @Transactional
+    @JpaUnit("seed-smoke-tests-domain")
+    public void checkProductTest() {
+        Product product = createProduct();
+        productRepository.delete(product);;
+        product = productRepository.load(product.getEntityId());
+        Assertions.assertThat(product).isNull();
+    }
+}

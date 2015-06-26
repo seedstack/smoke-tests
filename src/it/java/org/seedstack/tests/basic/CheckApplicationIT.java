@@ -15,7 +15,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
-import org.seedstack.tests.HelloResource;
+import org.seedstack.tests.rest.HelloResource;
 
 /**
  * Check if {@link HelloResource} is ok.

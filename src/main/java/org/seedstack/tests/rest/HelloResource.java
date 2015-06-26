@@ -1,4 +1,4 @@
-package org.seedstack.tests;
+package org.seedstack.tests.rest;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
