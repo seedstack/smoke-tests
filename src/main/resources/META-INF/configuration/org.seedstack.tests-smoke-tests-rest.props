@@ -14,3 +14,5 @@ username = password
 
 # The following section resets to properties without prefix
 []
+
+org.seedstack.seed.rest.baseRel = 

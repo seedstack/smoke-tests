@@ -37,17 +37,18 @@ public class ProductJpaRepositoryIT {
     private static Logger logger;
 
     private Product createProduct() {
-        Product product = productFactory.create(1L);
-        Assertions.assertThat(product.getEntityId()).isNull();
+        final long id = 1L;
+        Product product = productFactory.create(id);
+        Assertions.assertThat(product.getEntityId()).isEqualTo(id);
         productRepository.persist(product);;
-        Assertions.assertThat(product.getEntityId()).isNotNull();
+        Assertions.assertThat(product.getEntityId()).isEqualTo(id);
         return product;
     }
 
     @Test
     @Transactional
     @JpaUnit("seed-smoke-tests-domain")
-    public void checkProductTest() {
+    public void checkProductResource() {
         Product product = createProduct();
         productRepository.delete(product);;
         product = productRepository.load(product.getEntityId());

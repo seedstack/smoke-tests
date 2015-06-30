@@ -15,6 +15,7 @@ import org.seedstack.business.api.interfaces.assembler.MatchingFactoryParameter;
 import org.seedstack.tests.domain.product.Product;
 
 /**
+ * Representation for a {@link Product}.
  * @author thierry.bouvet@mpsa.com
  */
 @DtoOf(value=Product.class)

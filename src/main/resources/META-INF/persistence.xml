@@ -15,6 +15,7 @@
 
             <property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect" />
             <property name="hibernate.hbm2ddl.auto" value="update" />
+            <property name="hibernate.ejb.resource_scanner" value="org.seedstack.seed.jpa.websphere.Scanner" />
 
             <property name="sql.enforce_strict_size" value="true"/>
         </properties>

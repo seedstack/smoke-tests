@@ -6,6 +6,8 @@
  */
 package org.seedstack.tests.basic;
 
+import javax.ws.rs.core.MediaType;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
@@ -35,8 +37,7 @@ public class CheckApplicationIT {
 
         Assertions.assertThat(response.getStatusLine().getStatusCode()).isEqualTo(HttpStatus.SC_OK);
         
-        final String textMimeType = "text/plain";
-        Assertions.assertThat(ContentType.getOrDefault(response.getEntity()).getMimeType()).isEqualTo(textMimeType);
+        Assertions.assertThat(ContentType.getOrDefault(response.getEntity()).getMimeType()).isEqualTo(MediaType.TEXT_PLAIN);
         
         final String textFromResponse = "hello";
         Assertions.assertThat(EntityUtils.toString(response.getEntity())).isEqualTo(textFromResponse);

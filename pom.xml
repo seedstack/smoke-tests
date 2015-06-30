@@ -12,6 +12,8 @@
         <sourceEncoding>UTF-8</sourceEncoding>
         <webContent>${project.basedir}/src/main/webapp</webContent>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <host.port/>
+        <env/>
     </properties>
 
     <build>
@@ -25,9 +27,18 @@
         </testResources>
         
         <plugins>
+<!--             <plugin> -->
+<!--                 <artifactId>maven-war-plugin</artifactId> -->
+<!--                 <version>2.6</version> -->
+<!--                 <configuration> -->
+<!--                     <archiveClasses>true</archiveClasses> -->
+<!--                 </configuration> -->
+<!--             </plugin> -->
+        
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.3</version>
                 <configuration>
                     <source>1.6</source>
                     <target>1.6</target>
@@ -79,7 +90,7 @@
                             <run>
                                 <namingStrategy>alias</namingStrategy>
                                 <wait>
-                                    <time>15000</time>
+                                    <time>20000</time>
                                 </wait>
                                 <log>
                                     <date>default</date>
@@ -297,7 +308,7 @@
                                             <port>host.port:9080</port>
                                         </ports>
                                         <wait>
-                                            <time>30000</time>
+                                            <time>40000</time>
                                         </wait>
                                     </run>
                                 </image>
