@@ -7,7 +7,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package org.seedstack.tests.domain.product;
+package org.seedstack.tests.domains.product;
 
 
 import javax.persistence.Column;
@@ -39,7 +39,7 @@ public class Product extends BaseAggregateRoot<Long> {
      * <p/>
      * Factories are in the same package so he can access package visibility.
      */
-    Product() {
+    protected Product() {
     }
     
     public Product(Long entityId) {

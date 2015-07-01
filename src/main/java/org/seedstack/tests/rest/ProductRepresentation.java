@@ -12,7 +12,7 @@ package org.seedstack.tests.rest;
 import org.seedstack.business.api.interfaces.assembler.DtoOf;
 import org.seedstack.business.api.interfaces.assembler.MatchingEntityId;
 import org.seedstack.business.api.interfaces.assembler.MatchingFactoryParameter;
-import org.seedstack.tests.domain.product.Product;
+import org.seedstack.tests.domains.product.Product;
 
 /**
  * Representation for a {@link Product}.
