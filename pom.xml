@@ -14,6 +14,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <host.port/>
         <env/>
+        <docker.certPath>/var/jenkins_home/docker</docker.certPath>
     </properties>
 
     <build>
@@ -199,7 +200,7 @@
                         <version>0.12.0</version>
                         <configuration>
                             <dockerHost>tcp://127.0.0.1:2376</dockerHost>
-                            <certPath>C:/Users/u063326/.boot2docker/certs/boot2docker-vm</certPath>
+                            <certPath>${docker.certPath}</certPath>
                             <sourceDirectory>/</sourceDirectory>
                             <images>
                                 <image>
