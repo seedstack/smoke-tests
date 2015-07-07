@@ -35,7 +35,8 @@ public class ProductResourceIT {
     @Test
     public void testProductResource() throws Exception {
         Integer port = Integer.valueOf(System.getProperty("docker.port"));
-        String uri = "http://localhost:" + port + "/smoke-tests/rest/product";
+        String hostname = System.getProperty("docker.host");
+        String uri = "http://"+hostname+":" + port + "/smoke-tests/rest/product";
         
         createProducts(uri);
         

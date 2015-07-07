@@ -4,6 +4,7 @@
 package org.seedstack.tests.domains;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
@@ -34,7 +35,8 @@ public class ClientResourceIT {
     @Test
     public void testClientResource() throws Exception {
         Integer port = Integer.valueOf(System.getProperty("docker.port"));
-        String uri = "http://localhost:" + port + "/smoke-tests/rest/client";
+        String hostname = System.getProperty("docker.host");
+        String uri = "http://"+hostname+":" + port + "/smoke-tests/rest/client";
         
         createClients(uri);
         
