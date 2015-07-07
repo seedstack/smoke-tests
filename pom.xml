@@ -14,7 +14,8 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <host.port/>
         <env/>
-        <docker.certPath>/var/jenkins_home/docker</docker.certPath>
+        <docker.certPath/>
+        <docker.host/>
     </properties>
 
     <build>
@@ -199,7 +200,7 @@
                         <artifactId>docker-maven-plugin</artifactId>
                         <version>0.12.0</version>
                         <configuration>
-                            <dockerHost>tcp://192.168.59.103:2376</dockerHost>
+                            <dockerHost>tcp://${docker.host}:2376</dockerHost>
                             <certPath>${docker.certPath}</certPath>
                             <sourceDirectory>/</sourceDirectory>
                             <images>
@@ -229,6 +230,7 @@
                             <execution>
                                 <id>start</id>
                                 <goals>
+                                    <goal>build</goal>
                                     <goal>start</goal>
                                 </goals>
                                 <phase>pre-integration-test</phase>
