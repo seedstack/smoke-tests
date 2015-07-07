@@ -12,7 +12,6 @@
         <sourceEncoding>UTF-8</sourceEncoding>
         <webContent>${project.basedir}/src/main/webapp</webContent>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <host.port/>
         <env/>
         <docker.certPath/>
         <docker.host/>
