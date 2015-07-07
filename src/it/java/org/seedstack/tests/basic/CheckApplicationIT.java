@@ -30,7 +30,8 @@ public class CheckApplicationIT {
     @Test
     public void testHelloResource() throws Exception {
         Integer port = Integer.valueOf(System.getProperty("docker.port"));
-        String uri = "http://localhost:" + port + "/smoke-tests/rest/hello";
+        Integer hostname = Integer.valueOf(System.getProperty("docker.host"));
+        String uri = "http://"+hostname+":" + port + "/smoke-tests/rest/hello";
         HttpUriRequest request = new HttpGet(uri);
 
         HttpResponse response = HttpClientBuilder.create().build().execute(request);
