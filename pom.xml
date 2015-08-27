@@ -75,13 +75,6 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>org.seedstack.seed</groupId>
-                <artifactId>seed-bom</artifactId>
-                <version>2.0.0</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
                 <groupId>org.seedstack</groupId>
                 <artifactId>seedstack-bom</artifactId>
                 <version>15.7</version>
@@ -148,6 +141,18 @@
             <artifactId>seed-integrationtest-support-web</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.eclipse.jgit</groupId>
+            <artifactId>org.eclipse.jgit</artifactId>
+            <version>4.0.1.201506240215-r</version>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.httpcomponents</groupId>
+                    <artifactId>httpclient</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
 
     </dependencies>
     
@@ -184,6 +189,8 @@
                             <testSourceDirectory>src/it/java</testSourceDirectory>
                             <systemPropertyVariables>
                                 <docker.port>${host.port}</docker.port>
+                                <server.name>${env}</server.name>
+                                <server.version>${env-version}</server.version>
                             </systemPropertyVariables>
                         </configuration>
                         <executions>
@@ -203,7 +210,7 @@
                     <plugin>
                         <groupId>org.jolokia</groupId>
                         <artifactId>docker-maven-plugin</artifactId>
-                        <version>0.12.0</version>
+                        <version> 0.13.3</version>
                         <configuration>
                             <dockerHost>tcp://${docker.host}:2376</dockerHost>
                             <certPath>${docker.certPath}</certPath>
@@ -330,6 +337,45 @@
                                         <wait>
                                             <time>40000</time>
                                         </wait>
+                                    </run>
+                                </image>
+                            </images>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>env-jetty</id>
+            <activation>
+                <property>
+                    <name>env</name>
+                    <value>jetty</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jolokia</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <configuration>
+                            <images>
+                                <image>
+                                    <build>
+                                        <from>jetty:9</from>
+                                        <assembly>
+                                            <basedir>/var/lib/jetty</basedir>
+                                            <descriptor>assembly/jetty-docker.xml</descriptor>
+                                        </assembly>
+                                        <runCmds>
+                                            <run>mkdir /home/jetty</run>
+                                            <run>chmod 777 /home/jetty</run>
+                                        </runCmds>
+                                    </build>
+                                    <run>
+                                        <ports>
+                                            <port>host.port:8080</port>
+                                        </ports>
                                     </run>
                                 </image>
                             </images>
