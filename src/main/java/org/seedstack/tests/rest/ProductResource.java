@@ -11,6 +11,7 @@ import org.seedstack.business.api.domain.Factory;
 import org.seedstack.business.api.domain.Repository;
 import org.seedstack.business.api.interfaces.assembler.FluentAssembler;
 import org.seedstack.business.api.interfaces.assembler.ModelMapper;
+import org.seedstack.seed.persistence.jpa.api.Jpa;
 import org.seedstack.seed.persistence.jpa.api.JpaUnit;
 import org.seedstack.seed.transaction.api.Transactional;
 import org.seedstack.tests.domains.product.Product;
@@ -22,6 +23,7 @@ import org.seedstack.tests.domains.product.Product;
 @Path("product")
 public class ProductResource {
 
+    @Jpa
     @Inject
     Repository<Product, Long> repository;
     

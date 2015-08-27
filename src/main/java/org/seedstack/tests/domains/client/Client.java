@@ -1,9 +1,9 @@
 package org.seedstack.tests.domains.client;
 
-import org.seedstack.business.api.domain.base.BaseAggregateRoot;
-
 import javax.persistence.Entity;
 import javax.persistence.Id;
+
+import org.seedstack.business.api.domain.BaseAggregateRoot;
 
 /**
  * Created on 02/07/2015.
