@@ -4,10 +4,9 @@
 package org.seedstack.tests;
 
 import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-@RunWith(Suite.class)
+@RunWith(JsonWriterSuite.class)
 @SuiteClasses({ BasicTests.class,JpaTests.class })
 public class AllTests {
 
