@@ -12,64 +12,38 @@
         <sourceEncoding>UTF-8</sourceEncoding>
         <webContent>${project.basedir}/src/main/webapp</webContent>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <docker.host>localhost</docker.host>
+        <docker.cert/>
         <env/>
-        <docker.certPath/>
-        <docker.host/>
+
+        <logback.version>1.1.3</logback.version>
+        <hibernate.version>5.0.1.Final</hibernate.version>
+        <hsqldb.version>2.3.3</hsqldb.version>
+        <docker-maven-plugin.version>0.14.2</docker-maven-plugin.version>
     </properties>
 
     <build>
-        <testResources>
-            <testResource>
-                <directory>src/it/resources</directory>
-            </testResource>
-            <testResource>
-                <directory>src/test/resources</directory>
-            </testResource>
-        </testResources>
-        
-        <plugins>
-<!--             <plugin> -->
-<!--                 <artifactId>maven-war-plugin</artifactId> -->
-<!--                 <version>2.6</version> -->
-<!--                 <configuration> -->
-<!--                     <archiveClasses>true</archiveClasses> -->
-<!--                 </configuration> -->
-<!--             </plugin> -->
-        
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.3</version>
-                <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <version>1.8</version>
-                <executions>
-                    <execution>
-                        <id>add-it-sources</id>
-                        <phase>generate-test-sources</phase>
-                        <goals>
-                            <goal>add-test-source</goal>
-                        </goals>
-                        <configuration>
-                            <sources>
-                                <source>src/it/java</source>
-                            </sources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-maven-plugin</artifactId>
-                <version>9.2.11.v20150529</version>
-            </plugin>
-        </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.3</version>
+                    <configuration>
+                        <source>1.6</source>
+                        <target>1.6</target>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>2.6</version>
+                    <configuration>
+                        <failOnMissingWebXml>false</failOnMissingWebXml>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 
     <dependencyManagement>
@@ -77,7 +51,7 @@
             <dependency>
                 <groupId>org.seedstack</groupId>
                 <artifactId>seedstack-bom</artifactId>
-                <version>15.7</version>
+                <version>16.4-SNAPSHOT</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -91,54 +65,64 @@
     </dependencyManagement>
 
     <dependencies>
-        <!-- JPA -->
         <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-entitymanager</artifactId>
+            <groupId>org.seedstack.seed</groupId>
+            <artifactId>seed-rest-jersey2</artifactId>
         </dependency>
         <dependency>
             <groupId>org.seedstack.business</groupId>
-            <artifactId>business-jpa</artifactId>
+            <artifactId>business-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.hsqldb</groupId>
-            <artifactId>hsqldb</artifactId>
+            <groupId>org.seedstack.seed</groupId>
+            <artifactId>seed-testing</artifactId>
+            <scope>compile</scope>
         </dependency>
-        <!-- Rest composite provides main features -->
-        <dependency>
-            <groupId>org.seedstack</groupId>
-            <artifactId>rest-composite</artifactId>
-            <type>pom</type>
-        </dependency>
-
-        <!-- Server API -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <version>3.1.0</version>
             <scope>provided</scope>
         </dependency>
-
-        <!-- Logger -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+
+        <!-- JPA -->
+        <dependency>
+            <groupId>org.seedstack.addons.jpa</groupId>
+            <artifactId>jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>${hsqldb.version}</version>
         </dependency>
 
         <!-- TEST  -->
         <dependency>
-            <groupId>org.seedstack.seed</groupId>
-            <artifactId>seed-unittest-support</artifactId>
+            <groupId>com.jayway.restassured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>2.5.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.seedstack.seed</groupId>
-            <artifactId>seed-integrationtest-support-core</artifactId>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20141113</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.seedstack.seed</groupId>
-            <artifactId>seed-integrationtest-support-web</artifactId>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -146,32 +130,42 @@
             <artifactId>org.eclipse.jgit</artifactId>
             <version>4.0.1.201506240215-r</version>
             <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.httpcomponents</groupId>
-                    <artifactId>httpclient</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
-
     </dependencies>
-    
-    <repositories>
-        <repository>
-            <id>sonatype-nexus-staging</id>
-            <name>Sonatype Nexus Staging</name>
-            <url>https://oss.sonatype.org/content/groups/staging</url>
-        </repository>
-    </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>sonatype-nexus-staging</id>
-            <name>Sonatype Nexus Staging</name>
-            <url>https://oss.sonatype.org/content/groups/staging</url>
-        </pluginRepository>
-    </pluginRepositories>
 
     <profiles>
+        <profile>
+            <id>snapshots</id>
+            <repositories>
+                <repository>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                    <releases>
+                        <enabled>false</enabled>
+                    </releases>
+                    <id>ojo-libs-snapshot</id>
+                    <name>ojo-snapshots</name>
+                    <url>https://oss.jfrog.org/artifactory/libs-snapshot</url>
+                </repository>
+            </repositories>
+        </profile>
+        <profile>
+            <id>bintray</id>
+            <repositories>
+                <repository>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <id>bintray</id>
+                    <name>bintray</name>
+                    <url>http://dl.bintray.com/seedstack/jars</url>
+                </repository>
+            </repositories>
+        </profile>
         <profile>
             <id>integration-tests</id>
             <activation>
@@ -186,11 +180,10 @@
                         <artifactId>maven-failsafe-plugin</artifactId>
                         <version>2.18.1</version>
                         <configuration>
-                            <testSourceDirectory>src/it/java</testSourceDirectory>
+                            <testSourceDirectory>src/test/java</testSourceDirectory>
                             <systemPropertyVariables>
                                 <docker.port>${host.port}</docker.port>
                                 <server.name>${env}</server.name>
-                                <server.version>${env-version}</server.version>
                             </systemPropertyVariables>
                         </configuration>
                         <executions>
@@ -201,19 +194,19 @@
                                 </goals>
                                 <configuration>
                                     <includes>
-                                        <include>**/AllTests.java</include>
+                                        <include>**/All.java</include>
                                     </includes>
                                 </configuration>
                             </execution>
                         </executions>
                     </plugin>
                     <plugin>
-                        <groupId>org.jolokia</groupId>
+                        <groupId>io.fabric8</groupId>
                         <artifactId>docker-maven-plugin</artifactId>
-                        <version> 0.13.3</version>
+                        <version>${docker-maven-plugin.version}</version>
                         <configuration>
                             <dockerHost>tcp://${docker.host}:2376</dockerHost>
-                            <certPath>${docker.certPath}</certPath>
+                            <certPath>${docker.cert}</certPath>
                             <sourceDirectory>/</sourceDirectory>
                             <images>
                                 <image>
@@ -267,18 +260,12 @@
                     <value>tomcat</value>
                 </property>
             </activation>
-            <dependencies>
-                <dependency>
-                    <groupId>org.apache.geronimo.specs</groupId>
-                    <artifactId>geronimo-jta_1.1_spec</artifactId>
-                    <version>1.1.1</version>
-                </dependency>
-            </dependencies>
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>org.jolokia</groupId>
+                        <groupId>io.fabric8</groupId>
                         <artifactId>docker-maven-plugin</artifactId>
+                        <version>${docker-maven-plugin.version}</version>
                         <configuration>
                             <images>
                                 <image>
@@ -315,7 +302,7 @@
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>org.jolokia</groupId>
+                        <groupId>io.fabric8</groupId>
                         <artifactId>docker-maven-plugin</artifactId>
                         <configuration>
                             <images>
@@ -356,7 +343,7 @@
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>org.jolokia</groupId>
+                        <groupId>io.fabric8</groupId>
                         <artifactId>docker-maven-plugin</artifactId>
                         <configuration>
                             <images>

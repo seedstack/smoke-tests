@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<configuration>
+    <include resource="org/seedstack/seed/core/logging/logback-defaults.xml"/>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>

@@ -1,0 +1,20 @@
+[org.seedstack]
+jpa.units = auto-unit, manual-unit
+jdbc.datasources = ds
+seed.core.application-id = smoke-tests
+
+[org.seedstack.jdbc.datasource.ds]
+driver = org.hsqldb.jdbcDriver
+url = jdbc:hsqldb:mem:test
+user = sa
+password =
+property.sql.enforce_strict_size = true
+
+[org.seedstack.jpa.unit.auto-unit]
+datasource = ds
+property.hibernate.dialect = org.hibernate.dialect.HSQLDialect
+property.hibernate.hbm2ddl.auto = update
+
+[org.seedstack.smoke.fixtures.jpa.AutoConfiguredEntity]
+jpa-unit = auto-unit
+
