@@ -12,7 +12,10 @@ jdk: oraclejdk8
 cache:
   directories: $HOME/.m2/repository
 
-install: echo "<settings><servers><server><id>bintray</id><username>\${env.BINTRAY_USER}</username><password>\${env.BINTRAY_KEY}</password></server></servers></settings>" > ~/.m2/settings.xml
+install: 
+  - echo "<settings><servers><server><id>bintray</id><username>\${env.BINTRAY_USER}</username><password>\${env.BINTRAY_KEY}</password></server></servers></settings>" > ~/.m2/settings.xml
+  - docker ps
+  - docker info
 
 script: mvn clean install -Denv=$TEST_SERVER -Psnapshots
 
