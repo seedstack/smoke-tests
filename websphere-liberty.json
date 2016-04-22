@@ -1,1 +1,1 @@
-{"Version":"8.5.5.6","Name":"websphere-liberty","Result":"SUCCESS"}
+{"result":"SUCCESS","serverName":"websphere-liberty","results":{"rest":{"testHelloResource":{"success":true}},"jpa":{"testManuallyConfiguredJPA":{"success":true},"testAutomaticallyConfiguredJPA":{"success":true}}}}
