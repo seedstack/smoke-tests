@@ -401,6 +401,7 @@
                     <dependency>
                         <groupId>org.hibernate</groupId>
                         <artifactId>hibernate-entitymanager</artifactId>
+                        <version>${hibernate.version}</version>
                         <exclusions>
                             <exclusion>
                                 <groupId>dom4j</groupId>
