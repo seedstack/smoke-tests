@@ -18,7 +18,7 @@ public class BaseSmokeTest {
     private final String baseUrl;
 
     public BaseSmokeTest() {
-        String port = System.getProperty("docker.port");
+        String port = System.getProperty("server.port");
         if (port == null || port.isEmpty()) {
             port = "8080";
         }

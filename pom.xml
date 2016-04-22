@@ -1,22 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-
-    Copyright (c) 2013-2016, The SeedStack authors <http://seedstack.org>
-
-    This Source Code Form is subject to the terms of the Mozilla Public
-    License, v. 2.0. If a copy of the MPL was not distributed with this
-    file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
--->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
-    <parent>
-        <groupId>org.seedstack.poms</groupId>
-        <artifactId>parent-internal</artifactId>
-        <version>2.4.0-SNAPSHOT</version>
-    </parent>
 
     <groupId>org.seedstack.tests</groupId>
     <artifactId>smoke-tests</artifactId>
@@ -24,10 +9,10 @@
     <packaging>war</packaging>
 
     <properties>
-        <license-check.skip>true</license-check.skip>
-        <compatibility.skip>true</compatibility.skip>
-
+        <sourceEncoding>UTF-8</sourceEncoding>
         <webContent>${project.basedir}/src/main/webapp</webContent>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <seedstack.version>RELEASE</seedstack.version>
         <docker.host>localhost</docker.host>
         <docker.port>2375</docker.port>
         <docker.cert/>
@@ -59,13 +44,6 @@
                         <failOnMissingWebXml>false</failOnMissingWebXml>
                     </configuration>
                 </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-failsafe-plugin</artifactId>
-                    <configuration>
-                        <skip>true</skip>
-                    </configuration>
-                </plugin>
             </plugins>
         </pluginManagement>
     </build>
@@ -75,7 +53,7 @@
             <dependency>
                 <groupId>org.seedstack</groupId>
                 <artifactId>seedstack-bom</artifactId>
-                <version>16.4-SNAPSHOT</version>
+                <version>${seedstack.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -143,18 +121,19 @@
             <version>20141113</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jgit</groupId>
+            <artifactId>org.eclipse.jgit</artifactId>
+            <version>4.0.1.201506240215-r</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <id>bintray-jfrog-jfrog-jars</id>
-            <name>bintray-plugins</name>
-            <url>http://dl.bintray.com/jfrog/jfrog-jars</url>
-        </pluginRepository>
-    </pluginRepositories>
 
     <profiles>
         <profile>
@@ -201,13 +180,13 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-failsafe-plugin</artifactId>
+                        <version>2.18.1</version>
                         <configuration>
                             <testSourceDirectory>src/test/java</testSourceDirectory>
                             <systemPropertyVariables>
-                                <docker.port>${host.port}</docker.port>
+                                <server.port>${host.port}</server.port>
                                 <server.name>${env}</server.name>
                             </systemPropertyVariables>
-                            <skip>false</skip>
                         </configuration>
                         <executions>
                             <execution>
@@ -244,12 +223,15 @@
                                     </build>
                                     <run>
                                         <namingStrategy>alias</namingStrategy>
-                                        <wait>
-                                            <time>30000</time>
-                                        </wait>
                                         <log>
                                             <date>default</date>
                                         </log>
+                                        <wait>
+                                            <http>
+                                                <url>http://${docker.host}:${host.port}/smoke-tests/hello</url>
+                                            </http>
+                                            <time>60000</time>
+                                        </wait>
                                     </run>
                                 </image>
                             </images>
@@ -344,9 +326,6 @@
                                         <ports>
                                             <port>host.port:9080</port>
                                         </ports>
-                                        <wait>
-                                            <time>40000</time>
-                                        </wait>
                                     </run>
                                 </image>
                             </images>
