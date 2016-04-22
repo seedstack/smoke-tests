@@ -121,18 +121,6 @@
             <version>20141113</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.4</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.jgit</groupId>
-            <artifactId>org.eclipse.jgit</artifactId>
-            <version>4.0.1.201506240215-r</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
     <profiles>
@@ -184,8 +172,9 @@
                         <configuration>
                             <testSourceDirectory>src/test/java</testSourceDirectory>
                             <systemPropertyVariables>
-                                <server.port>${host.port}</server.port>
+                                <server.port>${server.port}</server.port>
                                 <server.name>${env}</server.name>
+                                <server.version>${server.version}</server.version>
                             </systemPropertyVariables>
                         </configuration>
                         <executions>
@@ -228,7 +217,7 @@
                                         </log>
                                         <wait>
                                             <http>
-                                                <url>http://${docker.host}:${host.port}/smoke-tests/hello</url>
+                                                <url>http://${docker.host}:${server.port}/smoke-tests/hello</url>
                                             </http>
                                             <time>60000</time>
                                         </wait>
@@ -275,7 +264,7 @@
                             <images>
                                 <image>
                                     <build>
-                                        <from>tomcat:7</from>
+                                        <from>tomcat:latest</from>
                                         <assembly>
                                             <basedir>/usr/local/tomcat</basedir>
                                             <descriptor>assembly/tomcat-docker.xml</descriptor>
@@ -283,7 +272,7 @@
                                     </build>
                                     <run>
                                         <ports>
-                                            <port>host.port:8080</port>
+                                            <port>server.port:8080</port>
                                         </ports>
                                         <env>
                                             <CATALINA_OPTS>-Djava.security.egd=file:/dev/./urandom</CATALINA_OPTS>
@@ -324,7 +313,7 @@
                                     </build>
                                     <run>
                                         <ports>
-                                            <port>host.port:9080</port>
+                                            <port>server.port:9080</port>
                                         </ports>
                                     </run>
                                 </image>
@@ -351,7 +340,7 @@
                             <images>
                                 <image>
                                     <build>
-                                        <from>jetty:9</from>
+                                        <from>jetty:latest</from>
                                         <assembly>
                                             <basedir>/var/lib/jetty</basedir>
                                             <descriptor>assembly/jetty-docker.xml</descriptor>
@@ -363,7 +352,7 @@
                                     </build>
                                     <run>
                                         <ports>
-                                            <port>host.port:8080</port>
+                                            <port>server.port:8080</port>
                                         </ports>
                                     </run>
                                 </image>
@@ -372,6 +361,55 @@
                     </plugin>
                 </plugins>
             </build>
+        </profile>
+        <profile>
+            <id>env-wildfly</id>
+            <activation>
+                <property>
+                    <name>env</name>
+                    <value>wildfly</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>io.fabric8</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <configuration>
+                            <images>
+                                <image>
+                                    <build>
+                                        <from>jboss/wildfly:latest</from>
+                                        <assembly>
+                                            <basedir>/opt/jboss/wildfly/standalone/deployments</basedir>
+                                            <descriptor>assembly/wildfly-docker.xml</descriptor>
+                                        </assembly>
+                                    </build>
+                                    <run>
+                                        <ports>
+                                            <port>server.port:8080</port>
+                                        </ports>
+                                    </run>
+                                </image>
+                            </images>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+            <dependencyManagement>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.hibernate</groupId>
+                        <artifactId>hibernate-entitymanager</artifactId>
+                        <exclusions>
+                            <exclusion>
+                                <groupId>dom4j</groupId>
+                                <artifactId>dom4j</artifactId>
+                            </exclusion>
+                        </exclusions>
+                    </dependency>
+                </dependencies>
+            </dependencyManagement>
         </profile>
     </profiles>
 </project>

@@ -29,12 +29,22 @@ import static com.jayway.restassured.RestAssured.expect;
  */
 public class BasicRestIT extends BaseSmokeTest {
     @Test
-    public void testHelloResource() throws Exception {
+    public void testSimpleResource() throws Exception {
         expect()
                 .statusCode(200)
                 .contentType(MediaType.TEXT_PLAIN)
                 .body(Matchers.equalTo("hello"))
                 .when()
                 .get(url("/hello"));
+    }
+
+    @Test
+    public void testJsonResource() throws Exception {
+        expect()
+                .statusCode(200)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Matchers.equalTo("{\"key\":\"value\"}"))
+                .when()
+                .get(url("/json"));
     }
 }

@@ -4,6 +4,7 @@ env:
   - TEST_SERVER=tomcat
   - TEST_SERVER=websphere-liberty
   - TEST_SERVER=jetty
+  - TEST_SERVER=wildfly
 
 services: docker
 
