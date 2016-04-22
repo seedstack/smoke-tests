@@ -11,7 +11,7 @@
 (
     git clone https://github.com/seedstack/smoke-tests.git target/gh-pages
     cd target/gh-pages || exit
-    git co gh-pages || exit
+    git checkout gh-pages || exit
     cp -f ../results/*.json . || exit
     git config user.name "Travis-CI"
     git config user.email "travis@seedstack.org"
