@@ -1,1 +1,1 @@
-{"Version":"7.0.63","Name":"tomcat","Result":"SUCCESS"}
+{"result":"SUCCESS","serverName":"tomcat","results":{"rest":{"testHelloResource":{"success":true}},"jpa":{"testManuallyConfiguredJPA":{"success":true},"testAutomaticallyConfiguredJPA":{"success":true}}}}
