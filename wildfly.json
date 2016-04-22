@@ -1,0 +1,1 @@
+{"result":"SUCCESS","serverVersion":"","serverName":"wildfly","results":{"rest":{"testSimpleResource":{"success":true},"testJsonResource":{"success":true}},"jpa":{"testManuallyConfiguredJPA":{"success":true},"testAutomaticallyConfiguredJPA":{"success":true}}}}
