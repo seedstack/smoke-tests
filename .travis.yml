@@ -17,6 +17,6 @@ cache:
 
 install: echo "<settings><servers><server><id>bintray</id><username>\${env.BINTRAY_USER}</username><password>\${env.BINTRAY_KEY}</password></server></servers></settings>" > ~/.m2/settings.xml
 
-script: mvn clean install -Denv=$TEST_SERVER -U -Psnapshots
+script: mvn clean install -Denv=$TEST_SERVER -U -Pbintray,snapshots
 
 after_success: if [[ $TRAVIS_PULL_REQUEST = false ]] && [[ $TRAVIS_BRANCH = master ]]; then chmod +x deploy_ghpages.sh && ./deploy_ghpages.sh; fi
