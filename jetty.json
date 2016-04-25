@@ -1,1 +1,1 @@
-{"result":"SUCCESS","serverVersion":"","serverName":"jetty","results":{"rest":{"testSimpleResource":{"success":true},"testJsonResource":{"success":true}},"jpa":{"testManuallyConfiguredJPA":{"success":true},"testAutomaticallyConfiguredJPA":{"success":true}}}}
+{"Version":"9.3.2.v20150730","Name":"jetty","Result":"SUCCESS"}
