@@ -12,7 +12,7 @@
         <sourceEncoding>UTF-8</sourceEncoding>
         <webContent>${project.basedir}/src/main/webapp</webContent>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <seedstack.version>RELEASE</seedstack.version>
+        <seedstack.version>16.4-SNAPSHOT</seedstack.version>
         <docker.host>localhost</docker.host>
         <docker.port>2375</docker.port>
         <docker.cert/>
